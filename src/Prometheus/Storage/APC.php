@@ -271,7 +271,18 @@ class APC implements Adapter
      */
     private function toInteger($val)
     {
-        return unpack('Q', pack('d', $val))[1];
+        if (version_compare(PHP_VERSION, '5.6.3') >= 0) {
+          return unpack('Q', pack('d', $val))[1];
+        } else {
+          // Workaround to pack 64-bit integer in PHP < 5.6.3
+          // Taken from http://php.net/manual/en/function.pack.php#109328
+          $left = 0xffffffff00000000;
+          $right = 0x00000000ffffffff;
+          $l = ($val & $left) >>32;
+          $r = $val & $right;
+
+          return pack('NN', $l, $r);
+        }
     }
 
     /**
@@ -280,7 +291,15 @@ class APC implements Adapter
      */
     private function fromInteger($val)
     {
-        return unpack('d', pack('Q', $val))[1];
+        if (version_compare(PHP_VERSION, '5.6.3') >= 0) {
+            return unpack('d', pack('Q', $val))[1];
+        } else {
+          // Workaround to unpack 64-bit integer in PHP < 5.6.3
+          // Taken from http://php.net/manual/en/function.pack.php#109328
+          list($higher, $lower) = array_values(unpack('N2', $val));
+          
+          return $higher << 32 | $lower;
+        }
     }
 
     private function sortSamples(array &$samples)

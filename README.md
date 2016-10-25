@@ -1,8 +1,7 @@
 # A prometheus client library written in PHP
-
-[![Build Status](https://travis-ci.org/Jimdo/prometheus_client_php.svg?branch=master)](https://travis-ci.org/Jimdo/prometheus_client_php)
-[![Code Climate](https://codeclimate.com/github/Jimdo/prometheus_client_php.png)](https://codeclimate.com/github/Jimdo/prometheus_client_php)
-
+---
+_NOTICE: THE APC ADAPTER IS BROKEN UNDER PHP < 5.6.3_
+---
 
 This library uses Redis or APCu to do the client side aggregation.
 If using Redis, we recommend to run a local Redis instance next to your PHP workers.
@@ -68,7 +67,7 @@ Also look at the [examples](examples).
 
 ### Dependencies
 
-* PHP 5.6
+* PHP 5.5
 * PHP Redis extension
 * PHP APCu extension
 * [Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx)
